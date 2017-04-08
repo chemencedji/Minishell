@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME = ft_minishell1
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g3
 SRC = $(wildcard *.c)
@@ -21,7 +21,7 @@ all: $(NAME)
 
 $(NAME):
 		make -C $(LIBRARY)
-			$(CC) $(CFLAGS) -c $(SRC) -I $(LIBRARY)
+			$(CC) $(CFLAGS) -c -g $(SRC) -I $(LIBRARY)
 				$(CC) $(OBJ) -L $(LIBRARY) -lft -o $(NAME)
 
 .PHONY: clean

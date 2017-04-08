@@ -11,28 +11,57 @@
 /* ************************************************************************** */
 
 #include "ft_mini.h"
-#include "libft/includes/libft.h"
 
-int g_buffsize = 1024;
+int   g_buffsize = 1024;
+char  **g_env;
+char  **g_envadd;
+char  **g_expath;
 
-int     main(void)
+void    ft_path();
+
+int     main(int argc, char **argv, char **envp)
 {
   char  *line;
   char  **args;
   int   status;
-
-  do
+  
+  g_env = envp;
+  g_envadd = NULL;
+  ft_path();
+  if(argc > 0 && argv != NULL)
   {
-    ft_putstr("$> ");
-    line = lsh_read_line();
-    args = ft_strsplit(line, ' ');
-    status = lsh_execute(args);
-
-    free(line);
-    free(args);
+    do
+    {
+      ft_putstr("$> ");
+      line = lsh_read_line();
+      args = ft_strsplit(line, ' ');
+      status = lsh_execute(args);
+      free(line);
+      free(args);
+    }
+    while (status);
   }
-  while (status);
   return (0);
+}
+
+void    ft_path()
+{
+  int i;
+  char *path;
+  
+  i = -1;
+  while (g_env[++i])
+  {
+    if (ft_strncmp(g_env[i], "PATH=", 5) == 0)
+    {
+      path = g_env[i];
+      i = -1;
+      while(++i < 5)
+        path++;
+      g_expath = ft_strsplit(path, ':');
+      break ;
+    }
+  }
 }
 
 char    *lsh_read_line(void)
@@ -47,7 +76,7 @@ char    *lsh_read_line(void)
     exit(ft_exit_fail());
   while (1)
   {
-    c = getchar();
+    c = ft_getchar();
     if (c == '\t' || c == '\a' || c == '\r')
       c = ' ';
     if (c == '\n')
@@ -61,6 +90,16 @@ char    *lsh_read_line(void)
     if (position >= g_buffsize)
       buffer = ft_realloc(buffer);
   }
+}
+
+char  ft_getchar()
+{
+    char data[1];
+ 
+    if (read(0, data, 1) < 0)
+     write(2, &data, 1);
+ 
+  return(data[0]);
 }
 
 char  *ft_realloc(char *str)
