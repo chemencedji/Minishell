@@ -13,10 +13,15 @@
 
 extern int          g_buffsize;
 extern char         **g_env;
-extern char         **g_envadd;
-extern char         **g_expath;
 
-void    ft_path();
+typedef struct		s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
+void    ft_envpath(char **str);
 char    *lsh_read_line(void);
 int     ft_exit_fail(void);
 char    **lsh_split_line(char *line);

@@ -6,18 +6,14 @@
 /*   By: ichemenc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 18:44:50 by ichemenc          #+#    #+#             */
-/*   Updated: 2017/04/04 18:45:04 by ichemenc         ###   ########.fr       */
+/*   Updated: 2017/04/08 17:01:38 by ichemenc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_mini.h"
 
 int   g_buffsize = 1024;
-char  **g_env;
-char  **g_envadd;
-char  **g_expath;
-
-void    ft_path();
+t_env *g_env;
 
 int     main(int argc, char **argv, char **envp)
 {
@@ -25,9 +21,7 @@ int     main(int argc, char **argv, char **envp)
   char  **args;
   int   status;
   
-  g_env = envp;
-  g_envadd = NULL;
-  ft_path();
+  g_env = ft_envpath(envp);
   if(argc > 0 && argv != NULL)
   {
     do
@@ -44,25 +38,28 @@ int     main(int argc, char **argv, char **envp)
   return (0);
 }
 
-void    ft_path()
+t_env    *ft_envpath(char **str)
 {
-  int i;
-  char *path;
-  
-  i = -1;
-  while (g_env[++i])
-  {
-    if (ft_strncmp(g_env[i], "PATH=", 5) == 0)
-    {
-      path = g_env[i];
-      i = -1;
-      while(++i < 5)
-        path++;
-      g_expath = ft_strsplit(path, ':');
-      break ;
-    }
-  }
+	int 	i;
+	t_env	*elem;
+
+	i = -1;
+	elem = ft_create(str[++i]);
+	while (str[++i])
+	{
+	}
+	return (elem);
 }
+
+t_env	*ft_create(char *str)
+{
+	char *name;
+	char *value;
+
+
+}
+
+
 
 char    *lsh_read_line(void)
 {
