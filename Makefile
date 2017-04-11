@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_minishell1
+NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g3
 SRC = $(wildcard *.c)

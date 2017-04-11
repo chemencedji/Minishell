@@ -5,6 +5,8 @@ int (*builtin_func[]) (char **) = {
   &lsh_cd,
   &lsh_env,
   &lsh_setenv,
+  &lsh_unsetenv,
+  &lsh_echo,
   &lsh_help,
   &lsh_exit
 };
@@ -13,6 +15,8 @@ char *builtin_str[] = {
   "cd",
   "env",
   "setenv",
+  "unsetenv",
+  "echo",
   "help",
   "exit"
 };

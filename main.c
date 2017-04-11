@@ -13,7 +13,8 @@
 #include "ft_mini.h"
 
 int   g_buffsize = 1024;
-t_env *g_env;
+char  **g_env;
+t_env *g_envlist;
 
 int     main(int argc, char **argv, char **envp)
 {
@@ -21,7 +22,8 @@ int     main(int argc, char **argv, char **envp)
   char  **args;
   int   status;
   
-  g_env = ft_envpath(envp);
+  g_envlist = ft_envpath(envp);
+  g_env = envp;
   if(argc > 0 && argv != NULL)
   {
     do
@@ -42,21 +44,44 @@ t_env    *ft_envpath(char **str)
 {
 	int 	i;
 	t_env	*elem;
+	t_env *ptr;
 
-	i = -1;
-	elem = ft_create(str[++i]);
-	while (str[++i])
+	i = 0;
+	elem = ft_create(str[i++]);
+	ptr = elem;
+	while (str[i])
 	{
+	  ptr->next = ft_create(str[i]);
+	  ptr = ptr->next;
+	  i++;
 	}
 	return (elem);
 }
 
 t_env	*ft_create(char *str)
 {
-	char *name;
-	char *value;
-
-
+  size_t i;
+  t_env *elem;
+	
+	i = 0;
+	elem = (t_env*)malloc(sizeof(t_env));
+	while (str[i] != '\0' && str[i] != '=')
+	  i++;
+	elem->name = ft_strnew(i);
+	elem->name = ft_strncpy(elem->name, str, i);
+	if (str[++i] != '\0')
+	{
+	  str += i;
+	  i = 0;
+	  while (str[i] != '\0')
+	    i++;
+	 elem->value = ft_strnew(i);
+	 elem->value = ft_strncpy(elem->value, str, i);
+	}
+	else
+	  elem->value = NULL;
+	elem->next = NULL;
+	return (elem);
 }
 
 
