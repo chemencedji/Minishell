@@ -73,32 +73,6 @@ int lsh_launch(char **args)
   return 1;
 }
 
-char	*ft_line(char *str)
-{
-	int i;
-	int f;
-	char *ret;
-
-	i = ft_strlen(str);
-	ret = ft_strnew(i);
-	f = 0;
-	while(i >= 0)
-	{
-		if (str[i] == '/')
-		{
-			i--;
-			while(i >= 0)
-			{
-				ret[i] = str[i];
-				i--;
-			}
-			break ;
-		}
-		i--;
-	}
-	return (ret);
-}
-
 int lsh_num_builtins()
 {
   return (sizeof(builtin_str) / sizeof(char *));
