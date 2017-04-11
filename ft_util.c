@@ -260,7 +260,7 @@ int lsh_setenv(char **args)
           ptr->next->value = ft_strcpy(ptr->next->value, args[2]);
       }
     }
-    ft_newenv();
+    //ft_newenv();
   }
   return (1);
 }
@@ -291,7 +291,7 @@ int lsh_setenv(char **args)
   }
   g_env = newenv;
   g_envlist = ft_envpath(g_env);
-}
+}*/
 
 int lsh_unsetenv(char **args)
 {

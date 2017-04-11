@@ -46,5 +46,6 @@ void  ft_setoldpwd();
 void  ft_gohome();
 void  ft_goback();
 void  ft_gotto(char *str);
+char *ft_line(char *str);
 
 #endif

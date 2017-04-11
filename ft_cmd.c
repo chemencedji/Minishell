@@ -1,4 +1,5 @@
 
+
 #include "ft_mini.h"
 
 char    *ft_cmd(char *str)
@@ -10,6 +11,7 @@ char    *ft_cmd(char *str)
     
     i = -1;
     ptr = g_envlist;
+	g_expath = NULL;
     if (*str == '/')
         str = ft_strrchr(str, '/');
     while (ptr)
@@ -21,6 +23,8 @@ char    *ft_cmd(char *str)
         }
         ptr = ptr->next;
     }
+	if (g_expath == NULL)
+		return (NULL);
     ex_path = ft_strjoin("/", str);
     while (g_expath[++i])
     {

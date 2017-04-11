@@ -24,13 +24,20 @@ char *builtin_str[] = {
 int lsh_execute(char **args)
 {
   int i;
+  char *str;
   
   i = -1;
   if (args[0] == NULL)
     return 1;
+  str = args[0];
+  if (*str == '/')
+  {
+	  str = ft_strrchr(str, '/');
+	  str++;
+  }
   while (++i < lsh_num_builtins())
   {
-    if (ft_strcmp(args[0], builtin_str[i]) == 0)
+    if (ft_strcmp(str, builtin_str[i]) == 0)
       return ((*builtin_func[i])(args));
   }
   return (lsh_launch(args));
@@ -45,8 +52,10 @@ int lsh_launch(char **args)
   pid = fork();
   if (pid == 0)
   {
-    if ((path = ft_cmd(args[0])) != NULL)
-      execve(path, args, g_env);
+	if (args[0][0] == '/')
+		execve(args[0], args, g_env);
+	else if ((path = ft_cmd(args[0])) != NULL)
+		execve(path, args, g_env);
     else
       ft_putstr_fd(ft_strjoin(args[0], ": command not found\n"), 2);
     exit(EXIT_FAILURE);
@@ -62,6 +71,32 @@ int lsh_launch(char **args)
     while (!WIFEXITED(status) && !WIFSIGNALED(status) && !wpid);
   }
   return 1;
+}
+
+char	*ft_line(char *str)
+{
+	int i;
+	int f;
+	char *ret;
+
+	i = ft_strlen(str);
+	ret = ft_strnew(i);
+	f = 0;
+	while(i >= 0)
+	{
+		if (str[i] == '/')
+		{
+			i--;
+			while(i >= 0)
+			{
+				ret[i] = str[i];
+				i--;
+			}
+			break ;
+		}
+		i--;
+	}
+	return (ret);
 }
 
 int lsh_num_builtins()
