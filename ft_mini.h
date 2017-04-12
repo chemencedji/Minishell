@@ -19,11 +19,14 @@ typedef struct		s_env
 	struct s_env	*next;
 }					t_env;
 
+extern int			g_signal;
 extern int          g_buffsize;
 extern t_env        *g_envlist;
 extern char 		**g_env;
 
 void  ft_newenv();
+void	sighandler();
+void 	sh_loop(void);
 t_env   *ft_envpath(char **str);
 t_env	*ft_create(char *str);
 char    *lsh_read_line(void);

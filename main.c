@@ -6,38 +6,55 @@
 /*   By: ichemenc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 18:44:50 by ichemenc          #+#    #+#             */
-/*   Updated: 2017/04/11 19:27:25 by ichemenc         ###   ########.fr       */
+/*   Updated: 2017/04/12 18:46:21 by ichemenc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_mini.h"
 
 int   g_buffsize = 1024;
+int g_sigint;
 char  **g_env;
 t_env *g_envlist;
 
+void	sighandler()
+{
+	ft_putstr("\n$> ");
+	g_sigint = 0;
+}
+
 int     main(int argc, char **argv, char **envp)
 {
-  char  *line;
-  char  **args;
-  int   status;
-  
   g_envlist = ft_envpath(envp);
   g_env = envp;
+  g_sigint = 1;
+  signal(SIGINT, sighandler);
   if(argc > 0 && argv != NULL)
-  {
-    do
-    {
-      ft_putstr("$> ");
-      line = lsh_read_line();
-      args = ft_strsplit(line, ' ');
-      status = lsh_execute(args);
-      free(line);
-      free(args);
-    }
-    while (status);
-  }
+  	sh_loop();
   return (0);
+}
+
+void	sh_loop(void)
+{
+	char  *line;
+	char  **args;
+	int   status;
+
+	do
+	{
+		if (g_sigint)
+			ft_putstr("$> ");
+		line = lsh_read_line();
+		g_sigint = 1;
+		if (g_sigint)
+		{
+		args = ft_strsplit(line, ' ');
+		status = lsh_execute(args);
+		free(args);
+		}
+		free(line);
+	}
+	while (status);
 }
 
 t_env    *ft_envpath(char **str)
