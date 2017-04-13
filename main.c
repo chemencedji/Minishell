@@ -6,7 +6,7 @@
 /*   By: ichemenc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 18:44:50 by ichemenc          #+#    #+#             */
-/*   Updated: 2017/04/13 19:26:32 by ichemenc         ###   ########.fr       */
+/*   Updated: 2017/04/13 20:16:46 by ichemenc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ char		*lsh_read_line(void)
 	while (1)
 	{
 		c = ft_getchar();
+		if (c == 11 || c == 9)
+			buffer = ft_tab(buffer);
 		if (c == '\t' || c == '\a' || c == '\r')
 			c = ' ';
 		if (c == ';')
@@ -58,33 +60,35 @@ char		*lsh_read_line(void)
 	}
 }
 
-/*char  *ft_find(char *str)
+char  *ft_tab(char *str)
 {
   int i;
-  char *ex_path;
   char **all_expath;
   DIR *dir;
   struct dirent	*sd;
   
+  all_expath = NULL;
   all_expath = ft_expath();
   i = -1;
-  if (g_expath == NULL)
-		return ;
+  if (all_expath == NULL)
+		return (str);
 	while (all_expath[++i])
   {
-    if (dir = opendir(all_expath[i]) == NULL);
-      i++;
-    else
+    if ((dir = opendir(all_expath[i])))
     {
       while ((sd = readdir(dir)) != NULL)
       {
-        if(ft_strstr(sd->d_name, str) != NULL)
-          ft_printsub(sd->name, str);
+        if(ft_strncmp(sd->d_name, str, ft_strlen(str)) == 0)
+		{
+			ft_putstr(sd->d_name + ft_strlen(str));
+			return (sd->d_name);
+		}
       }
-      i++;
     }
+	i++;
   }
-}*/
+	return (str);
+}
 
 char		ft_getchar(void)
 {

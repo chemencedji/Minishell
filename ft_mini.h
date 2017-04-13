@@ -6,7 +6,7 @@
 /*   By: ichemenc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 18:52:14 by ichemenc          #+#    #+#             */
-/*   Updated: 2017/04/13 19:02:23 by ichemenc         ###   ########.fr       */
+/*   Updated: 2017/04/13 20:01:19 by ichemenc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <signal.h>
+# include <dirent.h>
 # include <sys/stat.h>
 
 typedef	struct		s_env
@@ -43,6 +44,7 @@ void				sh_loop(void);
 t_env				*ft_envpath(char **str);
 t_env				*ft_create(char *str);
 char				*lsh_read_line(void);
+char				*ft_tab(char *str);
 int					ft_exit_fail(void);
 char				**lsh_split_line(char *line);
 char				*ft_realloc(char *str);
