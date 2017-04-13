@@ -12,96 +12,24 @@
 
 #include "ft_mini.h"
 
-int   g_buffsize = 1024;
+int   g_buffsize;
+int g_semi;
 int g_sigint;
 char  **g_env;
 t_env *g_envlist;
 
-void	sighandler()
-{
-	ft_putstr("\n$> ");
-	g_sigint = 0;
-}
-
 int     main(int argc, char **argv, char **envp)
 {
+  g_buffsize = 1024;
   g_envlist = ft_envpath(envp);
   g_env = envp;
   g_sigint = 1;
+  g_semi = 0;
   signal(SIGINT, sighandler);
   if(argc > 0 && argv != NULL)
   	sh_loop();
   return (0);
 }
-
-void	sh_loop(void)
-{
-	char  *line;
-	char  **args;
-	int   status;
-
-	do
-	{
-		if (g_sigint)
-			ft_putstr("$> ");
-		line = lsh_read_line();
-		g_sigint = 1;
-		if (g_sigint)
-		{
-		args = ft_strsplit(line, ' ');
-		status = lsh_execute(args);
-		free(args);
-		}
-		free(line);
-	}
-	while (status);
-}
-
-t_env    *ft_envpath(char **str)
-{
-	int 	i;
-	t_env	*elem;
-	t_env *ptr;
-
-	i = 0;
-	elem = ft_create(str[i++]);
-	ptr = elem;
-	while (str[i])
-	{
-	  ptr->next = ft_create(str[i]);
-	  ptr = ptr->next;
-	  i++;
-	}
-	return (elem);
-}
-
-t_env	*ft_create(char *str)
-{
-  size_t i;
-  t_env *elem;
-	
-	i = 0;
-	elem = (t_env*)malloc(sizeof(t_env));
-	while (str[i] != '\0' && str[i] != '=')
-	  i++;
-	elem->name = ft_strnew(i);
-	elem->name = ft_strncpy(elem->name, str, i);
-	if (str[++i] != '\0')
-	{
-	  str += i;
-	  i = 0;
-	  while (str[i] != '\0')
-	    i++;
-	 elem->value = ft_strnew(i);
-	 elem->value = ft_strncpy(elem->value, str, i);
-	}
-	else
-	  elem->value = NULL;
-	elem->next = NULL;
-	return (elem);
-}
-
-
 
 char    *lsh_read_line(void)
 {
@@ -116,9 +44,13 @@ char    *lsh_read_line(void)
   while (1)
   {
     c = ft_getchar();
+    /*if (c == 11)
+      ft_find(buffer);*/
     if (c == '\t' || c == '\a' || c == '\r')
       c = ' ';
-    if (c == '\n')
+    if (c == ';')
+    	g_semi = 1;
+    if (c == '\n' || c == ';')
     {
       buffer[position] = '\0';
       return (buffer);
@@ -130,6 +62,36 @@ char    *lsh_read_line(void)
       buffer = ft_realloc(buffer);
   }
 }
+
+/*char  *ft_find(char *str)
+{
+  int i;
+  char *ex_path;
+  char **all_expath;
+  DIR *dir;
+  struct dirent	*sd;
+  
+  all_expath = ft_expath();
+  i = -1;
+  if (g_expath == NULL)
+		return ;
+	while (all_expath[++i])
+  {
+    if (dir = opendir(all_expath[i]) == NULL);
+      i++;
+    else
+    {
+      while ((sd = readdir(dir)) != NULL)
+      {
+        if(ft_strstr(sd->d_name, str) != NULL)
+          ft_printsub(sd->name, str);
+      }
+      i++;
+    }
+  }
+}
+
+void ft_printsub*/
 
 char  ft_getchar()
 {

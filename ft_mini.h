@@ -11,6 +11,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <signal.h>
+# include <sys/stat.h>
 
 typedef struct		s_env
 {
@@ -19,7 +20,8 @@ typedef struct		s_env
 	struct s_env	*next;
 }					t_env;
 
-extern int			g_signal;
+extern int			g_sigint;
+extern int			g_semi;
 extern int          g_buffsize;
 extern t_env        *g_envlist;
 extern char 		**g_env;
@@ -36,13 +38,19 @@ char    *ft_realloc(char *str);
 char    ft_getchar(void);
 int     lsh_launch(char **args);
 int     lsh_execute(char **args);
+void  ft_exec(char **args);
 int     lsh_num_builtins(void);
 char    *ft_cmd(char *str);
+char    **ft_expath();
 int     lsh_cd(char **args);
 int     lsh_env();
 int     lsh_setenv(char **args);
+void    ft_changenv(t_env *ptr, char **args);
+void    ft_addenv(t_env *ptr, char **args);
 int 	lsh_unsetenv(char **args);
+int 	ft_firgl(char **args);
 int 	lsh_echo(char **args);
+void  ft_printdol(char **args);
 int     lsh_help();
 int     lsh_exit();
 void  ft_setpwd();

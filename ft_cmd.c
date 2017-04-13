@@ -5,16 +5,37 @@
 char    *ft_cmd(char *str)
 {
     int i;
-    t_env *ptr;
     char *ex_path;
     char **g_expath;
 	struct stat buf;
     
     i = -1;
-    ptr = g_envlist;
-	g_expath = NULL;
+	g_expath = ft_expath();
+	if (g_expath == NULL)
+		return (NULL);
     if (*str == '/')
         str = ft_strrchr(str, '/');
+    ex_path = ft_strjoin("/", str);
+    while (g_expath[++i])
+    {
+        if (access(ft_strjoin(g_expath[i], ex_path), F_OK) == 0)
+        {
+            stat(ft_strjoin(g_expath[i], ex_path), &buf);
+		    if ((buf.st_mode & S_IXUSR) == 0)
+		        ft_putstr_fd("Could not execute. Permission denide\n", 2);
+            return (ft_strjoin(g_expath[i], ex_path));
+        }
+	}
+    return(NULL);
+}
+
+char    **ft_expath()
+{
+    t_env *ptr;
+    char **g_expath;
+    
+    ptr = g_envlist;
+    g_expath = NULL;
     while (ptr)
     {
         if (ft_strcmp(ptr->name, "PATH") == 0)
@@ -24,15 +45,5 @@ char    *ft_cmd(char *str)
         }
         ptr = ptr->next;
     }
-	if (g_expath == NULL)
-		return (NULL);
-    ex_path = ft_strjoin("/", str);
-    while (g_expath[++i])
-    {
-		lstat(ft_strjoin(g_expath[i], ex_path), &buf);
-		printf("%d\n", buf.st_mode & S_IXUSR);
-        if (access(ft_strjoin(g_expath[i], ex_path), F_OK) == 0)
-            return (ft_strjoin(g_expath[i], ex_path));
-	}
-    return(NULL);
+    return (g_expath);
 }

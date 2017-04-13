@@ -47,17 +47,11 @@ int lsh_launch(char **args)
 {
   pid_t pid, wpid;
   int status;
-  char *path;
 
   pid = fork();
   if (pid == 0)
   {
-	if (args[0][0] == '/')
-		execve(args[0], args, g_env);
-	else if ((path = ft_cmd(args[0])) != NULL)
-		execve(path, args, g_env);
-    else
-      ft_putstr_fd(ft_strjoin(args[0], ": command not found\n"), 2);
+    ft_exec(args);
     exit(EXIT_FAILURE);
   }
   else if (pid < 0)
@@ -71,6 +65,18 @@ int lsh_launch(char **args)
     while (!WIFEXITED(status) && !WIFSIGNALED(status) && !wpid);
   }
   return 1;
+}
+
+void  ft_exec(char **args)
+{
+  char *path;
+  
+    if (args[0][0] == '/')
+      execve(args[0], args, g_env);
+    else if ((path = ft_cmd(args[0])) != NULL)
+		  execve(path, args, g_env);
+    else
+      ft_putstr_fd(ft_strjoin(args[0], ": command not found\n"), 2);
 }
 
 int lsh_num_builtins()
