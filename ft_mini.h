@@ -44,7 +44,6 @@ void				sh_loop(void);
 t_env				*ft_envpath(char **str);
 t_env				*ft_create(char *str);
 char				*lsh_read_line(void);
-char				*ft_tab(char *str);
 int					ft_exit_fail(void);
 char				**lsh_split_line(char *line);
 char				*ft_realloc(char *str);

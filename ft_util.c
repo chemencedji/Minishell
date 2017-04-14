@@ -58,7 +58,7 @@ int			lsh_unsetenv(char **args)
 			free(del);
 			break ;
 		}
-		if (ptr->next != NULL)
+		if (ptr->next->next != NULL)
 			ptr = ptr->next;
 		else
 			break ;

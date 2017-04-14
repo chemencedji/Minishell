@@ -57,7 +57,7 @@ int			lsh_launch(char **args)
 	else
 	{
 		wpid = waitpid(pid, &status, WUNTRACED);
-		while (!WIFEXITED(status) && !WIFSIGNALED(status))
+		while (!WIFEXITED(status) && !WIFSIGNALED(status) && !wpid)
 			wpid = waitpid(pid, &status, WUNTRACED);
 	}
 	return (1);

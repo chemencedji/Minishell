@@ -15,10 +15,13 @@
 int			lsh_cd(char **args)
 {
 	if (args[1] == NULL)
-		ft_putstr_fd("Expected argument to \"cd\"\n", 2);
+	{
+		ft_setoldpwd();
+		ft_gohome();
+	}
 	else
 	{
-		if (ft_strcmp(args[1], "-") != 0)
+		if (ft_strcmp(args[1], "-") != 0 && args[2] != NULL)
 			ft_setoldpwd();
 		if (chdir(args[1]) == 0)
 			ft_setpwd();

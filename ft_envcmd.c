@@ -89,5 +89,6 @@ void		ft_addenv(t_env *ptr, char **args)
 	{
 		ptr->next->value = ft_strnew(ft_strlen(args[2]));
 		ptr->next->value = ft_strcpy(ptr->next->value, args[2]);
+		ptr->next->next = NULL;
 	}
 }
